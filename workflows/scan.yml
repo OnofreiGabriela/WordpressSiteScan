@@ -1,0 +1,29 @@
+name: WPScan Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Start WordPress
+      run: |
+        docker-compose up -d
+        sleep 40
+
+    - name: Run WPScan
+      env:
+        WPSCAN_API_TOKEN: ${{ secrets.GABRIELA_ONOFREI_WPSCAN_API_TOKEN }}
+      run: |
+        docker run --rm wpscanteam/wpscan \
+          --url http://host.docker.internal:8000 \
+          --api-token $WPSCAN_API_TOKEN \
+          --disable-tls-checks
+
+    - name: Cleaning
+      run: docker-compose down
