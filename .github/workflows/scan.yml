@@ -23,7 +23,7 @@ jobs:
     - name: Start WordPress
       run: |
         docker-compose -f info.yml up -d
-        sleep 40
+        sleep 80
 
     - name: Run WPScan
       env:
