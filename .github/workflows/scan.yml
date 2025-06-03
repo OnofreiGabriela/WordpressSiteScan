@@ -24,7 +24,8 @@ jobs:
       run: |
         docker-compose -f info.yml up -d
         sleep 80
-    - name: Debug: Print site homepage
+        
+    - name: Debug, Print site homepage
       run: curl http://172.17.0.1:8000
     
     - name: Run WPScan
