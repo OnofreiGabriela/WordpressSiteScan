@@ -25,6 +25,11 @@ jobs:
         echo "GABRIELA_ONOFREI_DB_PASS=${{ secrets.GABRIELA_ONOFREI_DB_PASS }}" >> $GITHUB_ENV
         echo "GABRIELA_ONOFREI_DB_ROOT_PASS=${{ secrets.GABRIELA_ONOFREI_DB_ROOT_PASS }}" >> $GITHUB_ENV
     
+    - name: Start WordPress
+      run: |
+        docker-compose -f info.yml up -d
+        sleep 40
+
     - name: Install WP CLI
       run: docker exec wordpress bash -c "apt update && apt install -y less mariadb-client curl unzip && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp"
 
@@ -38,11 +43,6 @@ jobs:
           --admin_email="admin@gmail.com" \
           --skip-email \
           --allow-root
-
-    - name: Start WordPress
-      run: |
-        docker-compose -f info.yml up -d
-        sleep 40
 
     - name: Run WPScan
       env:
