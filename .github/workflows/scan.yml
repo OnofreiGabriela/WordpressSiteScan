@@ -19,15 +19,17 @@ jobs:
         sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
         docker-compose version
+        
+    - name: Export DB secrets
+      run: |
+        echo "GABRIELA_ONOFREI_DB_PASS=${{ secrets.GABRIELA_ONOFREI_DB_PASS }}" >> $GITHUB_ENV
+        echo "GABRIELA_ONOFREI_DB_ROOT_PASS=${{ secrets.GABRIELA_ONOFREI_DB_ROOT_PASS }}" >> $GITHUB_ENV
 
     - name: Start WordPress
       run: |
         docker-compose -f info.yml up -d
         sleep 80
-        
-    - name: Debug, Print site homepage
-      run: curl http://172.17.0.1:8000
-    
+
     - name: Run WPScan
       env:
         WPSCAN_API_TOKEN: ${{ secrets.GABRIELA_ONOFREI_WPSCAN_API_TOKEN }}
