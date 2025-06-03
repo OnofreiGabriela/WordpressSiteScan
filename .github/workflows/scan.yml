@@ -13,7 +13,7 @@ jobs:
 
     - name: Start WordPress
       run: |
-        docker-compose up -d
+        info up -d
         sleep 40
 
     - name: Run WPScan
@@ -26,4 +26,4 @@ jobs:
           --disable-tls-checks
 
     - name: Cleaning
-      run: docker-compose down
+      run: info down
