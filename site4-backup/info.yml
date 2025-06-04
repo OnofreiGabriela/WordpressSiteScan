@@ -4,13 +4,13 @@ services:
     container_name: wordpress
     ports:
       - "8000:80"
+    volumes:
+      - ./exposed-backup:/var/www/html
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: ${GABRIELA_ONOFREI_DB_PASS}
       WORDPRESS_DB_NAME: wordpress
-    volumes:
-    - ./exposed-git:/var/www/html/.git
     depends_on:
       - db
 
