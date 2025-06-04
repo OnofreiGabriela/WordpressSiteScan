@@ -1,0 +1,24 @@
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    ports:
+      - "8030:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${GABRIELA_ONOFREI_DB_PASS}
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./exposed-readme:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: site3_db
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: ${GABRIELA_ONOFREI_DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${GABRIELA_ONOFREI_DB_ROOT_PASS}
