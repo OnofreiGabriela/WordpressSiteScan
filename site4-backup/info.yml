@@ -4,8 +4,6 @@ services:
     container_name: wordpress
     ports:
       - "8000:80"
-    volumes:
-      - ./exposed-backup:/var/www/html
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress
@@ -13,10 +11,11 @@ services:
       WORDPRESS_DB_NAME: wordpress
     depends_on:
       - db
+    volumes:
+      - ./exposed-backup:/var/www/html
 
   db:
     image: mysql:5.7
-    container_name: site4_db
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
