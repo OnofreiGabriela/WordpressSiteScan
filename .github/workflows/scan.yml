@@ -35,9 +35,6 @@ jobs:
 
           docker-compose -f "$site/info.yml" up -d
 
-          echo "Waiting for WordPress ($site)..."
-          sleep 60
-
           echo "Installing WP CLI in container"
           docker exec wordpress bash -c "\
             apt update && \
