@@ -10,7 +10,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${GABRIELA_ONOFREI_DB_PASS}
       WORDPRESS_DB_NAME: wordpress
     volumes:
-    - ./exposed-git/.gitt:/var/www/html/.git
+    - ./exposed-git:/var/www/html/.git
     depends_on:
       - db
 
