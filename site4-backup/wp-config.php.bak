@@ -18,3 +18,4 @@ define('NONCE_SALT',       'blabla');
 $table_prefix = 'wp_';
 
 define( 'WP_DEBUG', false );
+?>

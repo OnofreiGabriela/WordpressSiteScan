@@ -12,7 +12,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./exposed-backup:/var/www/html
+      - ./wp-config.php.bak:/var/www/html/wp-config.php.bak
 
   db:
     image: mysql:5.7
