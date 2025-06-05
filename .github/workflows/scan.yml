@@ -14,7 +14,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install Docker Compose
+    - name: Install the Docker Compose
       run: |
         sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
@@ -32,12 +32,13 @@ jobs:
         for site in site4-backup/; do
 
           echo "Starting $site"
+
           docker-compose -f "$site/info.yml" up -d
 
           echo "Waiting for WordPress ($site)..."
           sleep 30
 
-          echo "Installing WP CLI"
+          echo "Installing WP CLI in container"
           docker exec wordpress bash -c "\
             apt update && \
             apt install -y curl unzip mariadb-client less && \
@@ -47,26 +48,26 @@ jobs:
           echo "Installing WordPress core"
           docker exec wordpress wp core install \
             --url="http://localhost:8000" \
-            --title="${site%/}" \
+            --title="$site" \
             --admin_user="admin" \
             --admin_password="ParolaMeaDeAdmin" \
-            --admin_email="admin@example.com" \
+            --admin_email="admin@gmail.com" \
             --skip-email \
             --allow-root
 
-
-          if [[ "$site" == "site6-plugin/" ]]; then
-            echo "Installing vulnerable plugin on $site"
-            docker exec wordpress wp plugin install hello-dolly --activate --allow-root || echo "Plugin not found"
+          if [[ "$site" == "site7-theme/" ]]; then
+            echo "Activating 5star theme on $site"
+            docker exec wordpress wp theme activate 5star --allow-root || echo "Theme not found"
           fi
 
           echo "Scanning with WPScan ($site)"
-          docker run --rm --network ${site%/}_default wpscanteam/wpscan \
-            --url http://wordpress \
+          docker run --rm wpscanteam/wpscan \
+            --url http://172.17.0.1:8000 \
             --api-token $WPSCAN_API_TOKEN \
             --disable-tls-checks \
-            --enumerate vp,u || true
+            --enumerate u || true
 
           echo "Cleaning up $site"
           docker-compose -f "$site/info.yml" down
+
         done
