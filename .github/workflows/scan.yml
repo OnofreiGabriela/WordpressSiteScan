@@ -57,11 +57,11 @@ jobs:
 
           if [[ "$site" == "site6-plugin/" ]]; then
             echo "Installing vulnerable plugin on $site"
-            docker exec wordpress wp plugin install hello-dolly --activate --allow-root || echo "Plugin not found"
+            docker exec wordpress wp plugin install wp-live-chat-support --version=8.0.27 --force --activate --allow-root || echo "Plugin not found"
           fi
 
           docker exec wordpress wp plugin list --allow-root
-          
+
           ENUM_FLAGS="u"
 
           if [[ "$site" == "site2-version/" || "$site" == "site3-readme/" || "$site" == "site4-backup/" || "$site" == "site5-env/" ]]; then

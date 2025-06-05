@@ -5,7 +5,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./exposed-plugin/hello-dolly:/var/www/html/wp-content/plugins/hello-dolly
+      - ./exposed-plugin/wp-live-chat-support:/var/www/html/wp-content/plugins/wp-live-chat-support
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress
