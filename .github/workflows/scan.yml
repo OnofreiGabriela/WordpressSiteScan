@@ -55,20 +55,19 @@ jobs:
             --skip-email \
             --allow-root
 
-
           if [[ "$site" == "site6-plugin/" ]]; then
             echo "Installing vulnerable plugin on $site"
-            docker exec wordpress wp plugin install hello-dolly --activate --allow-root || echo "Plugin not found"
+            docker exec wordpress wp plugin delete hello-dolly --allow-root || true
+            docker exec wordpress wp plugin install hello-dolly --version=1.5 --activate --allow-root || echo "Plugin install failed"
+            docker exec wordpress wp plugin list --allow-root
           fi
-
-          docker exec wordpress wp plugin list --allow-root
 
           echo "Scanning with WPScan ($site)"
           docker run --rm wpscanteam/wpscan \
             --url http://172.17.0.1:8000 \
             --api-token $WPSCAN_API_TOKEN \
             --disable-tls-checks \
-            --enumerate u || true
+            --enumerate ap,at,cb,dbe,u,m || true
 
           echo "Cleaning up $site"
           docker-compose -f "$site/info.yml" down
