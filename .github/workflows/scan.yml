@@ -61,6 +61,8 @@ jobs:
             docker exec wordpress wp plugin install hello-dolly --activate --allow-root || echo "Plugin not found"
           fi
 
+          docker exec wordpress wp plugin list --allow-root
+
           echo "Scanning with WPScan ($site)"
           docker run --rm wpscanteam/wpscan \
             --url http://172.17.0.1:8000 \
