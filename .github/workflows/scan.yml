@@ -60,6 +60,11 @@ jobs:
             docker exec wordpress wp theme activate 5star --allow-root || echo "Theme not found"
           fi
 
+          if [[ "$site" == "site6-plugin/" ]]; then
+            echo "Installing vulnerable plugin on $site"
+            docker exec wordpress wp plugin install hello-dolly --activate --allow-root || echo "Plugin not found"
+          fi
+
           echo "Scanning with WPScan ($site)"
           docker run --rm wpscanteam/wpscan \
             --url http://172.17.0.1:8000 \
