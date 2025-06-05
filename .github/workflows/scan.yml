@@ -62,7 +62,7 @@ jobs:
 
           docker exec wordpress wp plugin list --allow-root
 
-          ENUM_FLAGS="u"
+          ENUM_FLAGS="vp,u"
 
           if [[ "$site" == "site2-version/" || "$site" == "site3-readme/" || "$site" == "site4-backup/" || "$site" == "site5-env/" ]]; then
             ENUM_FLAGS="vp,vt,u"
