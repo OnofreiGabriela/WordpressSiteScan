@@ -17,7 +17,7 @@ services:
 
   db:
     image: mysql:5.7
-    container_name: wordpress
+    container_name: site4_db
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
