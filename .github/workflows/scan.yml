@@ -57,11 +57,11 @@ jobs:
 
           if [[ "$site" == "site6-plugin/" ]]; then
             echo "Installing vulnerable plugin on $site"
-            docker exec wordpress wp plugin delete hello-dolly --allow-root || true
-            docker exec wordpress wp plugin install hello-dolly --version=1.5 --activate --allow-root || echo "Plugin install failed"
-            docker exec wordpress wp plugin list --allow-root
+            docker exec wordpress wp plugin install hello-dolly --activate --allow-root || echo "Plugin not found"
           fi
 
+          docker exec wordpress wp plugin list --allow-root
+          
           ENUM_FLAGS="u"
 
           if [[ "$site" == "site2-version/" || "$site" == "site3-readme/" || "$site" == "site4-backup/" || "$site" == "site5-env/" ]]; then
