@@ -62,12 +62,20 @@ jobs:
             docker exec wordpress wp plugin list --allow-root
           fi
 
-          echo "Scanning with WPScan ($site)"
+          ENUM_FLAGS="u"
+
+          if [[ "$site" == "site2-version/" || "$site" == "site3-readme/" || "$site" == "site4-backup/" || "$site" == "site5-env/" ]]; then
+            ENUM_FLAGS="vp,vt,u"
+          elif [[ "$site" == "site6-plugin/" ]]; then
+            ENUM_FLAGS="vp,u"
+          fi
+
+          echo "Scanning with WPScan ($site) using enumerate: $ENUM_FLAGS"
           docker run --rm wpscanteam/wpscan \
             --url http://172.17.0.1:8000 \
             --api-token $WPSCAN_API_TOKEN \
             --disable-tls-checks \
-            --enumerate ap,at,cb,dbe,u,m || true
+            --enumerate $ENUM_FLAGS || true
 
           echo "Cleaning up $site"
           docker-compose -f "$site/info.yml" down
