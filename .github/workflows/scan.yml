@@ -14,7 +14,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install the Docker Compose
+    - name: Install Docker Compose
       run: |
         sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
@@ -37,7 +37,7 @@ jobs:
           echo "Waiting for WordPress ($site)..."
           sleep 30
 
-          echo "Installing WP CLI in container"
+          echo "Installing WP CLI"
           docker exec wordpress bash -c "\
             apt update && \
             apt install -y curl unzip mariadb-client less && \
@@ -47,20 +47,16 @@ jobs:
           echo "Installing WordPress core"
           docker exec wordpress wp core install \
             --url="http://localhost:8000" \
-            --title="$site" \
+            --title="${site%/}" \
             --admin_user="admin" \
             --admin_password="ParolaMeaDeAdmin" \
-            --admin_email="admin@gmail.com" \
+            --admin_email="admin@example.com" \
             --skip-email \
             --allow-root
 
-          if [[ "$site" == "site7-theme/" ]]; then
-            echo "Activating 5star theme on $site"
-            docker exec wordpress wp theme activate 5star --allow-root || echo "Theme not found"
-          fi
 
           if [[ "$site" == "site6-plugin/" ]]; then
-            echo "Installing and activating vulnerable plugin on $site"
+            echo "Installing vulnerable plugin on $site"
             docker exec wordpress wp plugin install hello-dolly --activate --allow-root || echo "Plugin not found"
           fi
 
@@ -69,9 +65,8 @@ jobs:
             --url http://wordpress \
             --api-token $WPSCAN_API_TOKEN \
             --disable-tls-checks \
-            --enumerate u || true
+            --enumerate vp,u || true
 
           echo "Cleaning up $site"
           docker-compose -f "$site/info.yml" down
-
         done
