@@ -29,7 +29,7 @@ jobs:
       env:
         WPSCAN_API_TOKEN: ${{ secrets.GABRIELA_ONOFREI_WPSCAN_API_TOKEN }}
       run: |
-        for site in $(site6-plugin); do
+        for site in site6-plugin; do
 
           echo "Starting $site"
 
