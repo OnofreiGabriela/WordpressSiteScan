@@ -29,7 +29,7 @@ jobs:
       env:
         WPSCAN_API_TOKEN: ${{ secrets.GABRIELA_ONOFREI_WPSCAN_API_TOKEN }}
       run: |
-        for site in site4-backup/; do
+        for site in $(ls -d site*/); do
 
           echo "Starting $site"
 
@@ -55,10 +55,6 @@ jobs:
             --skip-email \
             --allow-root
 
-          if [[ "$site" == "site7-theme/" ]]; then
-            echo "Activating 5star theme on $site"
-            docker exec wordpress wp theme activate 5star --allow-root || echo "Theme not found"
-          fi
 
           if [[ "$site" == "site6-plugin/" ]]; then
             echo "Installing vulnerable plugin on $site"
