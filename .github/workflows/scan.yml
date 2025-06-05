@@ -29,7 +29,7 @@ jobs:
       env:
         WPSCAN_API_TOKEN: ${{ secrets.GABRIELA_ONOFREI_WPSCAN_API_TOKEN }}
       run: |
-        for site in $(ls -d site*/); do
+        for site in $(site6-plugin); do
 
           echo "Starting $site"
 
@@ -57,7 +57,7 @@ jobs:
 
           if [[ "$site" == "site6-plugin/" ]]; then
             echo "Installing vulnerable plugin on $site"
-            docker exec wordpress wp plugin install wp-live-chat-support --version=8.0.27 --force --activate --allow-root || echo "Plugin not found"
+            docker exec wordpress wp plugin activate wp-live-chat-support --allow-root || echo "Activation failed"
           fi
 
           docker exec wordpress wp plugin list --allow-root
