@@ -57,7 +57,7 @@ jobs:
 
           if [[ "$site" == "site6-plugin/" ]]; then
             echo "Installing vulnerable plugin on $site"
-            docker exec wordpress wp plugin activate wp-live-chat-support --version=8.0.26 --allow-root || echo "Activation failed"
+            docker exec wordpress wp plugin install wp-live-chat-support --version=8.0.26 --force --activate --allow-root
           fi
 
           docker exec wordpress wp plugin list --allow-root
