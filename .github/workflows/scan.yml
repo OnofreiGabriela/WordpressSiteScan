@@ -55,6 +55,11 @@ jobs:
             --skip-email \
             --allow-root
 
+          if [[ "$site" == "site7-theme/" ]]; then
+            echo "Activating 5star theme on $site"
+            docker exec wordpress wp theme activate 5star --allow-root || echo "Theme not found"
+          fi
+
           echo "Scanning with WPScan ($site)"
           docker run --rm wpscanteam/wpscan \
             --url http://172.17.0.1:8000 \
