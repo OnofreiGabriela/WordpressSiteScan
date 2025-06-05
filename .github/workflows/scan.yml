@@ -36,7 +36,7 @@ jobs:
 
           echo "Starting ${site}"
 
-          compose_file="${site}info.yml"
+          compose_file="${site}/info.yml"
 
           docker-compose -f "$compose_file" up -d
 
